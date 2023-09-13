@@ -1,0 +1,7 @@
+export const SET_USER = "SET_USER";
+export const SET_TOKEN = "SET_TOKEN";
+export const SET_LOADING = "SET_LOADING";
+export const REMOVE_LOADING = "REMOVE_LOADING";
+export const SET_HAS_REGISTERED = "SET_HAS_REGISTERED";
+export const SET_API_RESPONSE = "SET_API_RESPONSE";
+export const SET_ONBOARDING = "SET_ONBOARDING";

@@ -1,0 +1,10 @@
+export default {
+  SEASALT: "#F7F7F7",
+  FLORAL_WHITE: "#F6F4EB",
+  BABY_BLUE: "#91C8E4",
+  BLUE_GRAY: "#749BC2",
+  STEEL_BLUE: "#4682A9",
+  PRUSSIAN_BLUE: "#14384F",
+  BLACK: "#000000",
+  WHITE: "#FFFFFF",
+};

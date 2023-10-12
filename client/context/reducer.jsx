@@ -6,6 +6,9 @@ import {
   SET_HAS_REGISTERED,
   SET_API_RESPONSE,
   SET_ONBOARDING,
+  CREATE_ITEM_BEGIN,
+  CREATE_ITEM_SUCCESS,
+  CREATE_ITEM_ERROR,
 } from "./actions";
 
 const reducer = (state, action) => {
@@ -39,6 +42,18 @@ const reducer = (state, action) => {
 
   if (action.type === SET_ONBOARDING) {
     return { ...state, viewedOnboarding: true };
+  }
+
+  if (action.type === CREATE_ITEM_BEGIN) {
+    return { ...state, isLoading: true };
+  }
+
+  if (action.type === CREATE_ITEM_SUCCESS) {
+    return { ...state, isLoading: false };
+  }
+
+  if (action.type === CREATE_ITEM_ERROR) {
+    return { ...state, isLoading: false };
   }
 
   throw new Error(`Ingen tilsvarende action : ${action.type}`);

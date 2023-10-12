@@ -7,9 +7,17 @@ import {
   forgotPasswordCode,
   handlePasswordCodeVerification,
   handlePasswordChange,
+  getUser,
+  getUserInformation,
 } from "../controllers/userControllers.js";
 
 const router = Router();
+
+// Get Single User - to be used for own profile
+router.post("/single-user", getUser);
+
+// Get Users Information for Sales
+router.get("/", getUserInformation);
 
 router.post("/signup", createUser);
 router.post("/login", login);

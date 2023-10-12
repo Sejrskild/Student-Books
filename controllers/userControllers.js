@@ -1,8 +1,89 @@
 import dotenv from "dotenv";
+import jwt from "jsonwebtoken";
 dotenv.config();
 
 import User from "../models/User.js";
+import Item from "../models/Item.js";
 import sendEmailToUser from "../utilities/mail.js";
+
+// Get Single User
+const getUser = async (req, res) => {
+  if (!req.body.token) {
+    return res.status(400).json({
+      message: "Manglende token",
+    });
+  }
+
+  try {
+    const { userId } = jwt.decode(req.body.token, process.env.JWT_SECRET);
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({
+        message: "Brugeren findes ikke",
+      });
+    }
+
+    user.password = undefined;
+
+    res.status(200).json({
+      user,
+      message: "Brugeren blev fundet 🥳",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: "Der skete en fejl",
+      error,
+    });
+  }
+};
+
+const getUserInformation = async (req, res) => {
+  const { userId } = req.query;
+
+  if (!userId) {
+    return res.status(400).json({
+      message: "Manglende bruger ID",
+    });
+  }
+
+  // Try to find the user and return it
+  try {
+    const user = await User.findById(userId);
+    const items = await Item.find({ soldBy: userId });
+
+    if (!user) {
+      return res.status(404).json({
+        message: "Brugeren findes ikke",
+      });
+    }
+
+    user.password = undefined;
+    const result = {
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      phone: user.phone,
+      phone_code: user.phone_code,
+      _id: user._id,
+      image: user.image,
+      createdAt: user.createdAt,
+    };
+
+    res.status(200).json({
+      items,
+      user: result,
+      message: "Brugeren blev fundet 🥳",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: "Der skete en fejl",
+      error,
+    });
+  }
+};
 
 // Create User
 const createUser = async (req, res) => {
@@ -330,4 +411,6 @@ export {
   forgotPasswordCode,
   handlePasswordCodeVerification,
   handlePasswordChange,
+  getUser,
+  getUserInformation,
 };

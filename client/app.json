@@ -1,5 +1,19 @@
 {
   "expo": {
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share them with your friends."
+        }
+      ],
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Vil du give Student Books tilladelse til at bruge kameraet?"
+        }
+      ]
+    ],
     "name": "Student Books",
     "slug": "Student Books",
     "version": "1.0.0",

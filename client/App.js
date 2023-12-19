@@ -1,14 +1,11 @@
-import { StatusBar } from "expo-status-bar";
 import "react-native-gesture-handler";
 import { AppProvider } from "./context/appContext";
-import AppNavigator from "./utilities/AppNavigator";
-import "./config/ReactotronConfig";
+import AppNavigation from "./AppNavigation";
 
 export default function App() {
   return (
     <AppProvider>
-      <StatusBar style="auto" />
-      <AppNavigator />
+      <AppNavigation />
     </AppProvider>
   );
 }

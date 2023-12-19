@@ -26,6 +26,10 @@ const UserSchema = new mongoose.Schema(
     image: {
       type: String,
     },
+    avatar: {
+      type: String,
+      required: [true, "Vælg en avatar"],
+    },
     email: {
       type: String,
       required: [true, "Udfyld email"],
@@ -61,11 +65,14 @@ const UserSchema = new mongoose.Schema(
     password: {
       type: String,
       required: [true, "Udfyld password"],
-      minlength: [6, "Password skal være mindst 6 tegn"],
       select: false,
     },
     reset_password_code: {
       type: String,
+    },
+    amountOfItemsListed: {
+      type: Number,
+      default: 0,
     },
   },
   {

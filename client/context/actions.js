@@ -1,0 +1,4 @@
+export const USER_LOGIN = "USER_LOGIN";
+export const FIRST_LAUNCH = "FIRST_LAUNCH";
+
+export const INITIALIZE_APP_LOADING = "INITIALIZE_APP_LOADING";

@@ -1,4 +1,5 @@
 import Item from "../models/Item.js";
+import User from "../models/User.js";
 import getTextLabels from "../utilities/googleVision.js";
 import OpenAI from "openai";
 import dotenv from "dotenv";
@@ -13,12 +14,30 @@ export const getAllItems = async (req, res) => {
   const { amount } = req.query;
 
   try {
+    let query = Item.find({}).populate({
+      path: "soldBy",
+      select: "-password -updatedAt -__v -confirmationToken",
+    });
+
     if (amount) {
-      const items = await Item.find({}).limit(parseInt(amount));
-      return res.status(200).json(items);
+      query = query.limit(parseInt(amount));
     }
 
-    const items = await Item.find({});
+    const items = await query;
+    res.status(200).json(items);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
+export const getItemsByUser = async (req, res) => {
+  const { id } = req.params;
+
+  if (!id) {
+    return res.status(400).json({ message: "No user id provided" });
+  }
+  try {
+    const items = await Item.find({ soldBy: id });
     res.status(200).json(items);
   } catch (error) {
     res.status(404).json({ message: error.message });
@@ -30,6 +49,25 @@ export const getSingleItem = async (req, res) => {
   try {
     const item = await Item.findById(id);
     res.status(200).json(item);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
+export const getItemsBySearch = async (req, res) => {
+  const { search } = req.query;
+
+  try {
+    const items = await Item.find({
+      $or: [{ title: { $regex: search, $options: "i" } }],
+    })
+      .populate({
+        path: "soldBy",
+        select: "-password -updatedAt -__v -confirmationToken",
+      })
+      .sort({ isPromoted: -1, createdAt: -1 });
+
+    return res.status(200).json(items);
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
@@ -68,6 +106,18 @@ export const createItem = async (req, res) => {
       return res.status(400).json({ message: "Prisen skal være over 0 kr." });
     }
 
+    let user = await User.findByIdAndUpdate(
+      req.user.userId,
+      { $inc: { amountOfItemsListed: 1 } },
+      { new: true }
+    );
+
+    console.log(user);
+
+    // await User.findByIdAndUpdate(req.user.userId, {
+    //   $inc: { amountOfItemsListed: 1 },
+    // });
+
     const item = await Item.create({
       title,
       author,
@@ -78,7 +128,7 @@ export const createItem = async (req, res) => {
       fieldOfStudy,
       semester,
       description,
-      soldBy: req.user.userId,
+      soldBy: user,
     });
 
     res.status(201).json({
@@ -86,9 +136,11 @@ export const createItem = async (req, res) => {
       type: "success",
       title: "Mega fedt! 🤩",
       item,
+      user,
     });
   } catch (error) {
-    res.status(404).json({ message: error.message });
+    console.log(error);
+    return res.status(404).json({ message: error.message });
   }
 };
 
@@ -141,5 +193,32 @@ export const getTextFromImage = async (req, res) => {
     res.status(200).json({ text, type: "success" });
   } catch (error) {
     res.status(404).json({ type: "error", error });
+  }
+};
+
+export const deleteItem = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const item = await Item.findById(id);
+
+    if (!item) {
+      return res.status(404).json({ message: "Item not found" });
+    }
+
+    if (item.soldBy.toString() !== req.user.userId) {
+      return res.status(401).json({ message: "Not authorized" });
+    }
+
+    await Item.findByIdAndDelete(id);
+
+    await User.findByIdAndUpdate(req.user.userId, {
+      $inc: { amountOfItemsListed: -1 },
+    });
+
+    const user = await User.findById(req.user.userId);
+
+    res.status(200).json({ message: "Item deleted", type: "success", user });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
   }
 };

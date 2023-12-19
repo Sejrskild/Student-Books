@@ -88,17 +88,9 @@ const getUserInformation = async (req, res) => {
 // Create User
 const createUser = async (req, res) => {
   try {
-    const { firstName, lastName, email, phone_code, phone, password } =
-      req.body;
+    const { firstName, lastName, email, phone, password, avatar } = req.body;
 
-    if (
-      !firstName ||
-      !lastName ||
-      !email ||
-      !phone ||
-      !password ||
-      !phone_code
-    ) {
+    if (!firstName || !lastName || !email || !phone || !password) {
       return res.status(400).json({
         message: "Udfyld alle felter",
       });
@@ -121,6 +113,8 @@ const createUser = async (req, res) => {
       });
     }
 
+    const phone_code = "+45";
+
     const user = await User.create({
       firstName,
       lastName,
@@ -128,6 +122,7 @@ const createUser = async (req, res) => {
       phone,
       password,
       phone_code,
+      avatar,
     });
     const token = user.JWT();
 
@@ -143,6 +138,7 @@ const createUser = async (req, res) => {
         lastName: user.lastName,
         email: user.email,
         phone: user.phone,
+        avatar: user.avatar,
       },
       message: "Bruger oprettet",
       token,
@@ -153,6 +149,25 @@ const createUser = async (req, res) => {
       message: "Der skete en fejl",
       error,
     });
+  }
+};
+
+const updateUser = async (req, res) => {
+  const { id } = req.params;
+  console.log(id);
+
+  try {
+    const user = await User.findByIdAndUpdate(id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+
+    const token = user.JWT();
+
+    return res.status(200).json({ user, success: "true", token });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Der skete en fejl", error });
   }
 };
 
@@ -202,7 +217,7 @@ const login = async (req, res) => {
     "+password"
   );
   if (!user) {
-    return res.status(400).json({
+    return res.status(404).json({
       message: "Brugeren findes ikke.",
       type: "error",
       title: "Der skete en fejl!",
@@ -211,7 +226,7 @@ const login = async (req, res) => {
 
   const correctPassword = await user.checkPassword(password);
   if (!correctPassword) {
-    return res.status(404).json({
+    return res.status(401).json({
       message: "Der skete desværre en fejl. Muligvis fejl 40?",
       type: "error",
       title: "Pas på! Der skete en fejl!",
@@ -307,6 +322,7 @@ const forgotPasswordCode = async (req, res) => {
 const handlePasswordCodeVerification = async (req, res) => {
   try {
     const { email, code } = req.body;
+    console.log(req.body);
 
     if (!email || !code) {
       return res.status(400).json({
@@ -411,6 +427,7 @@ export {
   forgotPasswordCode,
   handlePasswordCodeVerification,
   handlePasswordChange,
+  updateUser,
   getUser,
   getUserInformation,
 };

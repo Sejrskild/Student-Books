@@ -13,10 +13,12 @@
   "license": "ISC",
   "dependencies": {
     "@google-cloud/vision": "^4.0.2",
+    "axios": "^1.5.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
+    "expo-font": "^11.6.0",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.1",
     "mongoose": "^7.4.3",

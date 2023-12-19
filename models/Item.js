@@ -6,7 +6,7 @@ const ItemSchema = new mongoose.Schema(
       type: String,
       required: [true, "Udfyld titel"],
       trim: true,
-      maxlength: [25, "Titel må ikke være længere end 25 tegn"],
+      maxlength: [50, "Titel må ikke være længere end 25 tegn"],
       minlength: [3, "Titel må ikke være kortere end 3 tegn"],
     },
     author: {
@@ -49,7 +49,10 @@ const ItemSchema = new mongoose.Schema(
     soldBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      // required: true,
+    },
+    isPromoted: {
+      type: Boolean,
+      default: false,
     },
   },
   {

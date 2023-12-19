@@ -7,17 +7,14 @@ import {
   forgotPasswordCode,
   handlePasswordCodeVerification,
   handlePasswordChange,
+  updateUser,
   getUser,
   getUserInformation,
 } from "../controllers/userControllers.js";
 
 const router = Router();
 
-// Get Single User - to be used for own profile
-router.post("/single-user", getUser);
-
-// Get Users Information for Sales
-router.get("/", getUserInformation);
+router.patch("/:id", updateUser);
 
 router.post("/signup", createUser);
 router.post("/login", login);
@@ -32,5 +29,11 @@ router.post("/reset-password", handlePasswordChange);
 
 // Confirm Email Route
 router.get("/confirm-email", confirmEmail);
+
+// Get Single User - to be used for own profile
+// router.post("/single-user", getUser);
+
+// Get Users Information for Sales
+// router.get("/", getUserInformation);
 
 export default router;

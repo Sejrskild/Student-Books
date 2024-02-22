@@ -19,6 +19,10 @@ import { useAppContext } from "../../context/appContext";
 import axios from "axios";
 
 export default function Item(props) {
+  useEffect(() => {
+    console.log(props);
+  }, []);
+
   const sheet = React.useRef();
   const { user, handleUpdateUser } = useAppContext();
 

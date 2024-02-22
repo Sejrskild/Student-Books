@@ -80,6 +80,7 @@ const UserSchema = new mongoose.Schema(
   }
 );
 
+// Methods used in controllers/userControllers.js
 UserSchema.pre("save", async function () {
   if (!this.isModified("password")) {
     return;

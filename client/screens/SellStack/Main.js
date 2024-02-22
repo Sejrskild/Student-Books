@@ -323,6 +323,7 @@ export default function TradingScreen({ navigation, route }) {
               multiline={true}
               loading={isLocalLoading}
             />
+
             <TouchableOpacity
               style={styles.descriptionGenerator}
               onPress={generateDescription}

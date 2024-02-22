@@ -1,5 +1,6 @@
 import vision from "@google-cloud/vision";
 
+// Returns a string of text labels from an image in base64 format
 const getTextLabels = async (image) => {
   const client = new vision.ImageAnnotatorClient();
 

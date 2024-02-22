@@ -1,3 +1,7 @@
+// We have not made a global stylesheet, as we don't think it's necessary for this project.
+// However, we have made a global theme file, which contains the colors used throughout the app.
+// We prefer to style components individually, as we think it makes it easier to maintain the code, and then use the components in the app.
+
 const COLORS = {
   // Light Mode Colors
   light_primary: "#2d3e4f",

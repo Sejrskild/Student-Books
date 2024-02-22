@@ -1,4 +1,4 @@
-// make a request to the database to populate the schools table
+// This is simply a function that populates the database with some schools.
 
 import School from "../models/School.js";
 

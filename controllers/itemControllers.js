@@ -5,6 +5,7 @@ import OpenAI from "openai";
 import dotenv from "dotenv";
 dotenv.config();
 
+// OpenAI Configuration, used for connecting to our OpenAI account.
 const openai = new OpenAI({
   organization: "org-MSG51eS7SnKuzQxU7Qk220at",
   apiKey: process.env.OPENAI_API_KEY,
@@ -192,6 +193,7 @@ export const getTextFromImage = async (req, res) => {
     const text = await getTextLabels(image);
     res.status(200).json({ text, type: "success" });
   } catch (error) {
+    console.log(error);
     res.status(404).json({ type: "error", error });
   }
 };

@@ -1,5 +1,15 @@
 // appContext.js
 
+/*
+
+  This file contains the AppProvider component, which is a custom component that wraps the entire app, and makes the app context available to all components.
+
+  It also contains the useAppContext hook, which is a custom hook that can be used to access the app context from any component.
+
+  The app context is used to store global state, such as the user, and the firstLaunch status.
+
+*/
+
 import axios from "axios";
 import React, { useContext, useReducer, useEffect } from "react";
 import reducer from "./reducer";
@@ -29,6 +39,7 @@ const AppProvider = ({ children }) => {
 
   useEffect(() => {
     dispatch({ type: INITIALIZE_APP_LOADING, payload: true });
+
     // Fetch user from AsyncStorage when AppProvider mounts
     const fetchUser = async () => {
       const user = await AsyncStorage.getItem("user");

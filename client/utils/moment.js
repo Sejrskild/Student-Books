@@ -2,6 +2,8 @@ import moment from "moment";
 import "moment/locale/da";
 import "moment-timezone";
 
+// Moment is used for formatting dates.
+
 moment.locale("da");
 
 moment.updateLocale("da", {

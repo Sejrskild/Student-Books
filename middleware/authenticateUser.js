@@ -1,6 +1,8 @@
 import jwt from "jsonwebtoken";
 import UnauthorizedError from "../errors/unauthenticated.js";
 
+// Checks if the user is authenticated.
+
 const authenticateUser = async (req, res, next) => {
   const authHeader = req.headers.authorization;
 

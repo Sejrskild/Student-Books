@@ -1,6 +1,9 @@
-# Student Books
+# Student Books - created for educational use!
 
 Welcome to the Student Books app, a dedicated platform for students to buy and sell textbooks with ease. This repository contains both the client-side application, created with Expo React Native, and the server-side application, built with Node.js.
+
+## Video Demo with speak :)
+[Video Demo](https://www.youtube.com/watch?v=ky_MATqqFdw)
 
 ## Prerequisites
 
